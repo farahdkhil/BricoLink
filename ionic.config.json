@@ -1,0 +1,7 @@
+{
+  "name": "BricoLink ",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
