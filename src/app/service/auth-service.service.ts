@@ -33,8 +33,16 @@ export class AuthServiceService {
   }
 
   async resetPassword(email: string) {
-    return await this.ngFireAuth.sendPasswordResetEmail(email);
+    try {
+      await this.ngFireAuth.sendPasswordResetEmail(email);
+      console.log('Password reset email sent successfully');
+      return true; 
+    } catch (error) {
+      console.error('Error sending reset email:', error);
+      throw error; 
+    }
   }
+  
 
   async getProfile(): Promise<User | null> {
     return new Promise<User | null>((resolve, reject) => {

@@ -70,6 +70,7 @@ export class LoginPage implements OnInit {
       message: message,
       duration: 1500,
       position: 'top',
+      color:'danger',
     });
 
     await toast.present();
