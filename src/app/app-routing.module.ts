@@ -15,13 +15,18 @@ const routes: Routes = [
     loadChildren: () => import('./pages/signup/signup.module').then( m => m.SignupPageModule)
   },
   {
-    path: 'posts',
+    path: 'posts/:userId',
     loadChildren: () => import('./pages/posts/posts.module').then( m => m.PostsPageModule)
   },
   {
     path: 'forgot-password',
     loadChildren: () => import('./pages/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
+  },
+  {
+    path: 'all-posts',
+    loadChildren: () => import('./pages/all-posts/all-posts.module').then( m => m.AllPostsPageModule)
   }
+
 
 ];
 @NgModule({

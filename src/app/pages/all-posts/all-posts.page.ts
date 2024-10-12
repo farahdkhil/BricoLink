@@ -1,16 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonModal, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { AuthServiceService } from 'src/app/service/auth-service.service';
 import { Post, PostsService } from 'src/app/service/posts.service';
-import { IonModal, LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { PostsPage } from '../posts/posts.page';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-posts',
-  templateUrl: './posts.page.html',
-  styleUrls: ['./posts.page.scss'],
+  selector: 'app-all-posts',
+  templateUrl: './all-posts.page.html',
+  styleUrls: ['./all-posts.page.scss'],
 })
-export class PostsPage implements OnInit {
+export class AllPostsPage implements OnInit {
+
   @ViewChild(IonModal) modal!: IonModal;
 
   title!: string;
@@ -21,7 +23,6 @@ export class PostsPage implements OnInit {
     title: '',
     content: '',
     createdAt: undefined,
-
   };
   postsList: Post[] = [];
 
@@ -33,6 +34,18 @@ export class PostsPage implements OnInit {
     private authService: AuthServiceService,
     private router: Router
   ) {}
+
+  ngOnInit() {
+    this.loadAllPosts();
+  }
+
+  loadAllPosts() {
+    this.postService.getAllPosts().subscribe((res) => {
+      this.postsList = res;
+    }, error => {
+      console.error('Error loading posts:', error);
+    });
+  }
 
   async addPost() {
     try {
@@ -50,7 +63,7 @@ export class PostsPage implements OnInit {
         duration: 2000,
       });
       await toast.present();
-    } catch (error:any) {
+    } catch (error: any) {
       const toast = await this.toastCtrl.create({
         message: error.message,
         duration: 2000,
@@ -75,22 +88,6 @@ export class PostsPage implements OnInit {
     this.addPost();
   }
 
-  ngOnInit() {
-    this.authService.getProfile().then(user => {
-      if (user) {
-        this.userId = user.uid;
-        this.postService.getPosts(this.userId).subscribe(res => {
-          this.postsList = res;
-        });
-      } else {
-        console.error('User not logged in.');
-      }
-    }).catch(error => {
-      console.error('Error getting user profile:', error);
-    });
-  }
-  
-
   async openPost(post: Post) {
     const modal = await this.modalCtrl.create({
       component: PostsPage,
@@ -103,27 +100,7 @@ export class PostsPage implements OnInit {
   }
   signOut() {
     this.authService.signOut(); 
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']); 
   }
-  async deletePost(postId: string | undefined) {
-    if (postId) {
-      try {
-        await this.postService.removePost(postId);
-        const toast = await this.toastCtrl.create({
-          message: 'Post deleted successfully',
-          duration: 2000,
-        });
-        await toast.present();
-        // Refresh the posts list after deletion
-        this.postsList = this.postsList.filter(p => p.id !== postId);
-      } catch (error: any) {
-        const toast = await this.toastCtrl.create({
-          message: error.message,
-          duration: 2000,
-        });
-        await toast.present();
-      }
-    }
-  }
-  
+
 }
