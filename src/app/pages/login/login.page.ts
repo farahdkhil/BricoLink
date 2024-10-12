@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthServiceService } from 'src/app/service/auth-service.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+// import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { FormGroup,FormBuilder,Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -16,9 +17,19 @@ export class LoginPage implements OnInit {
   // email:any
   // password:any
   // contact:any
-
-  constructor(private toastController: ToastController, private alertController: AlertController, private loadingController: LoadingController, private authService: AuthServiceService, private router: Router, public formBuilder: FormBuilder) { }
-
+  darkMode: boolean = true;
+  constructor(private toastController: ToastController, private alertController: AlertController,
+     private loadingController: LoadingController, private authService: AuthServiceService,
+      private router: Router, public formBuilder: FormBuilder) {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    this.darkMode = prefersDark.matches;
+       }
+       cambio() {
+        // const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        this.darkMode = !this.darkMode;
+        document.body.classList.toggle( 'dark' );
+        
+      }
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
       email: [
@@ -52,7 +63,7 @@ export class LoginPage implements OnInit {
       if (user) {
         loading.dismiss();
         this.router.navigate(
-          ['/posts'])
+          ['/all-posts'])
       }
     } else {
       return console.log('Please provide all the required values!');

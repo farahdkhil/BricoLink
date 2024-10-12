@@ -1,4 +1,13 @@
 <ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item>
+      <ion-icon slot="start" name="moon"></ion-icon>
+      <ion-label>Toggle Dark Theme</ion-label>
+      <ion-toggle slot="end"
+                  [ngModel]="darkMode"
+                  (ionChange)="cambio()"></ion-toggle>
+    </ion-item>
+  </ion-list>
   <div class="header">
     <ion-img src="assets/pic.png" style="width: 50px; height: auto; display: block; margin-left: auto; margin-right: auto; "/>
     <ion-title class="title" size="large">Welcome Back</ion-title>
@@ -27,12 +36,12 @@
       </div>
     
       <div class="forgotpassword">
-        <a [routerLink]="['/forgot-password']" style="color: #5FC2BA">Forgot Password?</a>
+        <a [routerLink]="['/forgot-password']" style="color: #4ba8a0">Forgot Password?</a>
       </div>
 
     </div>
     <div class="signupLink">
-      <p class="p">New memember? <a [routerLink]="['/signup']" style="color: #5FC2BA">SignUp now</a></p>
+      <p class="p">New memember? <a [routerLink]="['/signup']" style="color: #4ba8a0">SignUp now</a></p>
     </div>
 
     <ion-fab *ngIf="ionicForm.valid" horizontal="center" margin-top="50px">
